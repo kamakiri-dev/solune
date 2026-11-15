@@ -15,7 +15,6 @@ class SoluneApp extends StatelessWidget {
       // MVP はダークモードだけ（ライトモードはフェーズ2）。
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData(
-        brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.indigo,
           brightness: Brightness.dark,

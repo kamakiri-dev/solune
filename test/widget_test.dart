@@ -13,7 +13,8 @@ void main() {
   testWidgets('アプリはダークモードで表示される', (WidgetTester tester) async {
     await tester.pumpWidget(const SoluneApp());
 
-    final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
-    expect(app.themeMode, ThemeMode.dark);
+    // 画面に実際に使われているテーマが暗いかを確かめる。
+    final context = tester.element(find.text('SOLUNE'));
+    expect(Theme.of(context).brightness, Brightness.dark);
   });
 }
