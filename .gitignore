@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Claude Code の自分だけの設定（公開しない）
+CLAUDE.local.md
