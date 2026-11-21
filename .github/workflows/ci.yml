@@ -1,0 +1,46 @@
+# CI（継続的インテグレーション）
+# push と PR のたびに、コードの静的チェック（analyze）とテスト（test）を自動で走らせる。
+# main のブランチ保護で、この2つのジョブが通らないとマージできないようにしている。
+# ジョブ名（analyze / test）を変えると、ブランチ保護の設定も直す必要がある。
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+# 同じブランチで新しい push があったら、古い実行は止めて時間を節約する
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# リポジトリの中身を読むだけにする（書き込みの権限は与えない）
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.0
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.0
+          cache: true
+      - run: flutter pub get
+      - run: flutter test
